@@ -76,5 +76,5 @@ resilience4j:
       profiler-service:
         base-config: default
 
-test:
-  config-server: "Git-repo-property"
+properties:
+  used: "Local-application-properties"
