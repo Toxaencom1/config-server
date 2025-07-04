@@ -77,3 +77,6 @@ resilience4j:
         base-config: default
       profiler-service:
         base-config: default
+
+test:
+  config-server: "Git-config-server-property"
