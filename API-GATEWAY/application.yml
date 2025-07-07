@@ -1,0 +1,57 @@
+server:
+  port: 8888
+
+spring: 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://keycloak.javaguru.by/realms/${KEYCLOAK_REALM}
+      client:
+        registration:
+          keycloak:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            scope: openid
+            authorization-grant-type: password
+            token-uri: https://keycloak.javaguru.by/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token
+        provider:
+          keycloak:
+            issuer-uri: https://keycloak.javaguru.by/realms/${KEYCLOAK_REALM}
+  cloud:    
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: accounting-service
+              uri: lb://ACCOUNTING-SERVICE
+              predicates:
+                - Path=/api/v*/accounting/**
+
+            - id: resources-service
+              uri: lb://RESOURCES-SERVICE
+              predicates:
+                - Path=/api/v*/resources/**
+
+            - id: vacation-service
+              uri: lb://VACATION-SERVICE
+              predicates:
+                - Path=/api/v*/vacation/**
+
+            - id: identity-service
+              uri: lb://IDENTITY-SERVICE
+              predicates:
+                - Path=/api/v*/auth/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    
+properties:
+  used: "Git-repository-application-properties"
