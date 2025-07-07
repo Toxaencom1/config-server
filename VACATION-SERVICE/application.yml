@@ -77,4 +77,4 @@ resilience4j:
         base-config: default
 
 properties:
-  used: "Git-repository-application-properties"
+  used: "Git-Vacation-application-properties"
