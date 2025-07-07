@@ -54,4 +54,4 @@ springdoc:
     path: /swagger-ui.html
     
 properties:
-  used: "Git-repository-application-properties"
+  used: "Git-ApiGateway-application-properties"
