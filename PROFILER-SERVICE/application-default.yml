@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    by.javaguru.profiler: debug
+    liquibase: error
+springdoc:
+  show-actuator: true
+
+properties:
+  used: "Git-Profiler-default-default-application-properties"
