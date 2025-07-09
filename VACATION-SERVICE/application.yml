@@ -1,5 +1,6 @@
 spring:
-  cloud:
+  application:
+    name: VACATION-SERVICE  
     httpclient:
       hc5:
         enabled: true
@@ -44,14 +45,13 @@ resilience4j:
       default:
         failure-rate-threshold: 50
         automatic-transition-from-open-to-half-open-enabled: true
-        wait-duration-in-open-state:
-          seconds: 5
+        wait-duration-in-open-state: 15s
         sliding-window-type: count_based
-        sliding-window-size: 2
-        minimum-number-of-calls: 1
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
         event-consumer-buffer-size: 10
         register-health-indicator: true
-        permitted-number-of-calls-in-half-open-state: 3
+        permitted-number-of-calls-in-half-open-state: 2
     instances:
       accounting-service:
         base-config: default
@@ -61,7 +61,7 @@ resilience4j:
         base-config: default
     circuit-breaker-aspect-order: 1
 
-    retry:
+  retry:
     retry-aspect-order: 2
     configs:
       default:
@@ -84,6 +84,9 @@ resilience4j:
         base-config: default
       profiler-service:
         base-config: default
+
+properties:
+  used: "Local-application-properties"
 
 properties:
   used: "Git-Vacation-application-properties"
