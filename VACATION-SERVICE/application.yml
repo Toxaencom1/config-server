@@ -86,7 +86,4 @@ resilience4j:
         base-config: default
 
 properties:
-  used: "Local-application-properties"
-
-properties:
   used: "Git-Vacation-application-properties"
