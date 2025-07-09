@@ -61,13 +61,22 @@ resilience4j:
         base-config: default
     circuit-breaker-aspect-order: 1
 
-  retry:
+    retry:
     retry-aspect-order: 2
     configs:
       default:
-        max-attempts: 10
-        wait-duration:
-          seconds: 5
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - by.javaguru.jdmik6.vacationservice.exception.ServiceConnectionException
+          - feign.RetryableException
+        ignore-exceptions:
+          - by.javaguru.jdmik6.vacationservice.exception.ClientRequestException
+          - by.javaguru.jdmik6.vacationservice.exception.NotFoundException
+          - by.javaguru.jdmik6.vacationservice.exception.ProfilerUpdateRejectException
+          - by.javaguru.jdmik6.vacationservice.exception.BudgetAllocationRejectException
+          - by.javaguru.jdmik6.vacationservice.exception.ResourcesCheckRejectException
+          - by.javaguru.jdmik6.vacationservice.exception.StabilityMechanismException
     instances:
       accounting-service:
         base-config: default
