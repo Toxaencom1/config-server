@@ -37,11 +37,7 @@ spring:
               uri: lb://VACATION-SERVICE
               predicates:
                 - Path=/api/v*/vacation/**
-
-            - id: identity-service
-              uri: lb://IDENTITY-SERVICE
-              predicates:
-                - Path=/api/v*/auth/**
+            
 eureka:
   client:
     service-url:
