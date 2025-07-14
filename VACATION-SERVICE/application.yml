@@ -18,6 +18,27 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092,localhost:9094
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #      retries: 10
+
+      properties:
+        #        retry.backoff.ms: 1000
+        delivery.timeout.ms: 20000
+        linger.ms: 0
+        request.timeout.ms: 5000
+        max.in.flight.requests.per.connection: 5
+      acks: all
+
+    consumer:
+      bootstrap-servers: localhost:9092,localhost:9094
+      group-id: request-created-events
+
+      properties:
+        spring.json.trusted.packages: "by.javaguru.jdmik6.core"
 
 eureka:
   client:
