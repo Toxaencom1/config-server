@@ -35,7 +35,7 @@ spring:
 
     consumer:
       bootstrap-servers: localhost:9092,localhost:9094
-      group-id: request-created-events
+      group-id: vacation-request-created-events
 
       properties:
         spring.json.trusted.packages: "by.javaguru.jdmik6.core"
