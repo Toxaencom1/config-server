@@ -38,7 +38,7 @@ spring:
       group-id: vacation-request-created-events
 
       properties:
-        spring.json.trusted.packages: "by.javaguru.jdmik6.core"
+        spring.json.trusted.packages: "by.javaguru.jdmik6.core.event"
 
 eureka:
   client:
