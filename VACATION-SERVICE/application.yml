@@ -42,8 +42,18 @@ spring:
 
 eureka:
   client:
+    # Как часто клиент обновляет локальный кеш реестра (по умолчанию 30с)
+    registry-fetch-interval-seconds: 5
+    # Включить инкрементальные обновления
+    disable-delta: false
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    # Как часто клиент отправляет heartbeat серверу (по умолчанию 30с)
+    lease-renewal-interval-in-seconds: 5
+    # Через сколько сервер считает инстанс недоступным без heartbeat (по умолчанию 90с)
+    lease-expiration-duration-in-seconds: 5
+    # Как быстро регистрироваться при старте
 
 server:
   port: ${SERVER_PORT:8080}
