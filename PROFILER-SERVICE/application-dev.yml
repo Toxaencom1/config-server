@@ -1,5 +1,23 @@
 springdoc:
   swagger-ui:
     enabled: true
-properties:
-  used: "Git-Profiler-dev-application-properties"
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092,localhost:9094
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        delivery.timeout.ms: 20000
+        linger.ms: 0
+        request.timeout.ms: 5000
+        max.in.flight.requests.per.connection: 5
+        spring.json.add.type.headers: true
+      acks: all
+
+    consumer:
+      bootstrap-servers: localhost:9092,localhost:9094
+      group-id: vacation-request-created-events
+
+      properties:
+        spring.json.trusted.packages: by.javaguru.jdmik6.core.event,by.javaguru.jdmik6.core.enums
