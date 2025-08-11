@@ -1,6 +1,8 @@
 spring:
   application:
-    name: VACATION-SERVICE  
+    name: VACATION-SERVICE
+  config:
+    import: "optional:configserver:"  
     httpclient:
       hc5:
         enabled: true
@@ -15,45 +17,57 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: true
+    properties.hibernate:
+      show_sql: true
+#      format_sql: true
+      use_sql_comments: true
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
   kafka:
     producer:
-      bootstrap-servers: localhost:9092,localhost:9094
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_PRODUCER_SERVERS}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      #      retries: 10
-
       properties:
-        #        retry.backoff.ms: 1000
-        delivery.timeout.ms: 20000
-        linger.ms: 0
-        request.timeout.ms: 5000
-        max.in.flight.requests.per.connection: 5
-      acks: all
+        delivery.timeout.ms: ${KAFKA_DELIVERY_TIMEOUT_MS:20000}
+        linger.ms: ${KAFKA_LINGER_MS:0}
+        request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT_MS:5000}
+        max.in.flight.requests.per.connection: ${KAFKA_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION:5}
+        spring.json.add.type.headers: true
+      acks: ${KAFKA_ACKS:all}
+      transaction-id-prefix: vacation-service-${random.value}-
 
     consumer:
-      bootstrap-servers: localhost:9092,localhost:9094
-      group-id: vacation-request-created-events
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_CONSUMER_SERVERS}
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:profiler-request-events}
+      isolation-level: READ_COMMITTED
+      auto-offset-reset: latest
 
       properties:
-        spring.json.trusted.packages: by.javaguru.jdmik6.core.event,by.javaguru.jdmik6.core.enums,by.javaguru.jdmik6.core.util
+        spring.json.trusted.packages: by.javaguru.jdmik6.core.event,by.javaguru.jdmik6.core.enums,by.javaguru.jdmik6.core.util.*
+
+kafka:
+  cluster:
+    partitions: 3
+    replicas: 3
+    min-insync-replicas: 2
+
+logging:
+  level:
+    org:
+      springframework:
+        kafka:
+          transaction.KafkaTransactionManager: ${LOG_KAFKA_TM_LEVEL:INFO}
+        transaction: ${LOG_KAFKA_TM_LEVEL:INFO}
+        orm.jpa.JpaTransactionManager: ${LOG_KAFKA_TM_LEVEL:INFO}
+      apache.kafka.clients.producer.internals.TransactionManager: ${LOG_KAFKA_TM_LEVEL:INFO}
+    root: ${LOG_ROOT_LEVEL:INFO}
 
 eureka:
   client:
-    # Как часто клиент обновляет локальный кеш реестра (по умолчанию 30с)
-    registry-fetch-interval-seconds: 5
-    # Включить инкрементальные обновления
-    disable-delta: false
     service-url:
       defaultZone: http://localhost:8761/eureka
-  instance:
-    # Как часто клиент отправляет heartbeat серверу (по умолчанию 30с)
-    lease-renewal-interval-in-seconds: 5
-    # Через сколько сервер считает инстанс недоступным без heartbeat (по умолчанию 90с)
-    lease-expiration-duration-in-seconds: 5
-    # Как быстро регистрироваться при старте
 
 server:
   port: ${SERVER_PORT:8080}
