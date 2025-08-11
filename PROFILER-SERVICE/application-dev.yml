@@ -41,3 +41,6 @@ logging:
         orm.jpa.JpaTransactionManager: ${LOG_KAFKA_TM_LEVEL:INFO}
       apache.kafka.clients.producer.internals.TransactionManager: ${LOG_KAFKA_TM_LEVEL:INFO}
     root: ${LOG_ROOT_LEVEL}
+
+properties:
+  used: "Git-Profiler-dev-application-properties"
