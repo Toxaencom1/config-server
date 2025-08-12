@@ -8,4 +8,4 @@ springdoc:
   show-actuator: true
 
 properties:
-  used: "Git-Profiler-default-default-application-properties"
+  used: "Git-default-default-application-properties"
