@@ -1,6 +1,9 @@
 spring:
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:default}
+  application:
+    name: PROFILER-SERVICE  
+    httpclient:
+      hc5:
+        enabled: true
   servlet:
     multipart:
       file-size-threshold: 2048
@@ -25,11 +28,41 @@ spring:
       fail-on-unknown-properties: true
   main:
     banner-mode: "off"
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_PRODUCER_SERVERS}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        delivery.timeout.ms: ${KAFKA_DELIVERY_TIMEOUT_MS:20000}
+        linger.ms: ${KAFKA_LINGER_MS:0}
+        request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT_MS:5000}
+        max.in.flight.requests.per.connection: ${KAFKA_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION:5}
+        spring.json.add.type.headers: true
+      acks: ${KAFKA_ACKS:all}
+      transaction-id-prefix: profiler-service-${random.value}-
+
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_CONSUMER_SERVERS}
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:profiler-request-events}
+      isolation-level: READ_COMMITTED
+      auto-offset-reset: latest
+
+      properties:
+        spring.json.trusted.packages: by.javaguru.jdmik6.core.event,by.javaguru.jdmik6.core.enums,by.javaguru.jdmik6.core.util.*
+
+kafka:
+  cluster:
+    partitions: ${KAFKA_CLUSTER_PARTITIONS:3}
+    replicas: ${KAFKA_CLUSTER_REPLICAS:3}
+    min-insync-replicas: ${KAFKA_CLUSTER_INSYNC_REPLICAS:2}
+
 management:
   endpoints:
     web:
       exposure:
         include: health, info
+        
 logging:
   level:
     root: info
@@ -46,4 +79,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 properties:
-  used: "Git-Profiler-default-application-properties"
+  used: "Git-application-properties"
