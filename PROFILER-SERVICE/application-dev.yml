@@ -4,6 +4,7 @@ springdoc:
 
 logging:
   level:
+    liquibase: debug
     org:
       springframework:
         kafka:
