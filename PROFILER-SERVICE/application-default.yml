@@ -6,6 +6,3 @@ logging:
     liquibase: error
 springdoc:
   show-actuator: true
-
-properties:
-  used: "Git-Profiler-default-default-application-properties"
