@@ -3,8 +3,7 @@ springdoc:
     enabled: ${SWAGGER_ENABLED:false}
 
 logging:
-  level:
-    liquibase: debug
+  level:    
     org:
       springframework:
         kafka:
